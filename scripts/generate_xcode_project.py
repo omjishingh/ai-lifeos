@@ -111,7 +111,7 @@ pbx += f'\t\t{PRODUCT_REF} /* AILifeOS.app */ = {{isa = PBXFileReference; explic
 
 for sf, fid in file_refs.items():
     fname = os.path.basename(sf)
-    pbx += f'\t\t{fid} /* {fname} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {fname}; sourceTree = "<group>"; }};\n'
+    pbx += f'\t\t{fid} /* {fname} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "{fname}"; sourceTree = "<group>"; }};\n'
 
 pbx += '''/* End PBXFileReference section */
 
@@ -366,7 +366,6 @@ pbx += f'''\t\t\t);
 \t\t\t\tINFOPLIST_FILE = Info.plist;
 \t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = "AI LifeOS";
 \t\t\t\tINFOPLIST_KEY_NSUserNotificationsUsageDescription = "Used to remind you about tasks, routines, and your daily briefing.";
-\t\t\t\tINFOPLIST_KEY_UIBackgroundModes = audio;
 \t\t\t\tINFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 \t\t\t\tINFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 \t\t\t\tINFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -397,7 +396,6 @@ pbx += f'''\t\t\t);
 \t\t\t\tINFOPLIST_FILE = Info.plist;
 \t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = "AI LifeOS";
 \t\t\t\tINFOPLIST_KEY_NSUserNotificationsUsageDescription = "Used to remind you about tasks, routines, and your daily briefing.";
-\t\t\t\tINFOPLIST_KEY_UIBackgroundModes = audio;
 \t\t\t\tINFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 \t\t\t\tINFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 \t\t\t\tINFOPLIST_KEY_UILaunchScreen_Generation = YES;
