@@ -19,7 +19,7 @@ for dirpath, _, filenames in os.walk(IOS_DIR):
         continue
     for f in filenames:
         if f.endswith(".swift"):
-            rel = os.path.relpath(os.path.join(dirpath, f), ROOT).replace("\\", "/")
+            rel = os.path.relpath(os.path.join(dirpath, f), IOS_DIR).replace("\\", "/")
             swift_files.append(rel)
 
 swift_files.sort()
@@ -111,7 +111,7 @@ pbx += f'\t\t{PRODUCT_REF} /* AILifeOS.app */ = {{isa = PBXFileReference; explic
 
 for sf, fid in file_refs.items():
     fname = os.path.basename(sf)
-    pbx += f'\t\t{fid} /* {fname} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "{fname}"; sourceTree = "<group>"; }};\n'
+    pbx += f'\t\t{fid} /* {fname} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "{sf}"; sourceTree = "<group>"; }};\n'
 
 pbx += '''/* End PBXFileReference section */
 
@@ -172,32 +172,40 @@ def write_groups(dir_rel, parent_list):
 all_groups = {}
 
 def build_group_tree(dir_rel):
-    full = os.path.join(ROOT, dir_rel) if dir_rel else None
+    full = IOS_DIR if not dir_rel else os.path.join(IOS_DIR, dir_rel.replace("/", os.sep))
     gid = gen_id("grp_" + (dir_rel or "root"))
     children = []
-    
-    if dir_rel is None or dir_rel == "":
-        children = [gen_id("grp_ios"), PRODUCTS_GROUP]
+
+    if not dir_rel:
+        children = [PRODUCTS_GROUP]
+        for item in sorted(os.listdir(full)):
+            if item == "AILifeOS.xcodeproj":
+                continue
+            item_path = os.path.join(full, item)
+            if os.path.isdir(item_path):
+                children.append(gen_id("grp_" + item))
+            elif item.endswith(".swift") and item in [os.path.basename(sf) for sf in swift_files]:
+                for sf in swift_files:
+                    if os.path.basename(sf) == item and "/" not in sf:
+                        children.append(file_refs[sf])
     else:
         for item in sorted(os.listdir(full)):
             item_path = os.path.join(full, item)
-            rel = f"{dir_rel}/{item}" if dir_rel else item
+            child_rel = f"{dir_rel}/{item}" if dir_rel else item
             if os.path.isdir(item_path):
-                if "AILifeOS.xcodeproj" in item_path:
-                    continue
-                children.append(gen_id("grp_" + rel))
+                children.append(gen_id("grp_" + child_rel))
             elif item.endswith(".swift"):
-                if rel in file_refs:
-                    children.append(file_refs[rel])
-    
+                if child_rel in file_refs:
+                    children.append(file_refs[child_rel])
+
     all_groups[dir_rel or ""] = (gid, children)
-    
-    if dir_rel == "":
-        build_group_tree("ios")
-    elif dir_rel == "ios":
+
+    if not dir_rel:
         for item in sorted(os.listdir(full)):
-            if os.path.isdir(os.path.join(full, item)) and item != "AILifeOS.xcodeproj":
-                build_group_tree(f"ios/{item}")
+            if item == "AILifeOS.xcodeproj":
+                continue
+            if os.path.isdir(os.path.join(full, item)):
+                build_group_tree(item)
     else:
         for item in sorted(os.listdir(full)):
             if os.path.isdir(os.path.join(full, item)):
@@ -206,27 +214,15 @@ def build_group_tree(dir_rel):
 build_group_tree("")
 
 for dir_rel, (gid, children) in sorted(all_groups.items(), key=lambda x: x[0]):
-    name = os.path.basename(dir_rel) if dir_rel else ""
-    path_attr = ""
-    if dir_rel == "ios":
-        path_attr = '\n\t\t\tpath = ios;'
-    elif dir_rel and "/" in dir_rel:
-        path_attr = f'\n\t\t\tpath = {os.path.basename(dir_rel)};'
-    
     pbx += f'\t\t{gid} = {{\n'
     pbx += '\t\t\tisa = PBXGroup;\n'
     pbx += '\t\t\tchildren = (\n'
     for c in children:
         pbx += f'\t\t\t\t{c},\n'
     pbx += '\t\t\t);\n'
-    if dir_rel == "":
-        pbx += '\t\t\tsourceTree = "<group>";\n'
-    elif dir_rel == "ios":
-        pbx += '\t\t\tpath = ios;\n\t\t\tsourceTree = "<group>";\n'
-    elif dir_rel.count("/") == 1:
-        pbx += f'\t\t\tpath = {os.path.basename(dir_rel)};\n\t\t\tsourceTree = "<group>";\n'
-    else:
-        pbx += f'\t\t\tpath = {os.path.basename(dir_rel)};\n\t\t\tsourceTree = "<group>";\n'
+    if dir_rel:
+        pbx += f'\t\t\tpath = {os.path.basename(dir_rel)};\n'
+    pbx += '\t\t\tsourceTree = "<group>";\n'
     pbx += '\t\t};\n'
 
 root_gid = all_groups[""][0]
