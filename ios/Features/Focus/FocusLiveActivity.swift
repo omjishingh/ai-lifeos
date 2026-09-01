@@ -1,5 +1,6 @@
 import ActivityKit
 import SwiftUI
+import WidgetKit
 
 struct FocusActivityAttributes: ActivityAttributes {
     struct ContentState: Codable, Hashable {
