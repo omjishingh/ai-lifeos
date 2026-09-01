@@ -51,6 +51,7 @@ final class OnboardingViewModel {
     private let sleepRepository: SleepRepositoryProtocol
     private let routineGenerator: RoutineGeneratorProtocol
     private let notificationScheduler: NotificationSchedulerProtocol
+    private let missedTaskService: MissedTaskServiceProtocol
     private let onComplete: () -> Void
 
     var currentStep: OnboardingStep = .welcome
@@ -76,6 +77,7 @@ final class OnboardingViewModel {
         sleepRepository: SleepRepositoryProtocol,
         routineGenerator: RoutineGeneratorProtocol = RoutineGenerator(),
         notificationScheduler: NotificationSchedulerProtocol,
+        missedTaskService: MissedTaskServiceProtocol,
         onComplete: @escaping () -> Void
     ) {
         self.settingsRepository = settingsRepository
@@ -84,6 +86,7 @@ final class OnboardingViewModel {
         self.sleepRepository = sleepRepository
         self.routineGenerator = routineGenerator
         self.notificationScheduler = notificationScheduler
+        self.missedTaskService = missedTaskService
         self.onComplete = onComplete
     }
 
@@ -172,21 +175,8 @@ final class OnboardingViewModel {
 
     private func scheduleReminders(profile: UserProfile, settings: AppSettings) async throws {
         guard settings.notificationsEnabled else { return }
-        try await notificationScheduler.scheduleWakeUp(at: profile.wakeUpTime)
-        try await notificationScheduler.scheduleSleepReminder(at: profile.sleepTime)
-
-        if settings.newsNotificationTime != "off" {
-            let (hour, minute) = newsBriefingTime(for: settings.newsNotificationTime)
-            try await notificationScheduler.scheduleDailyBriefing(at: hour, minute: minute)
-        }
-    }
-
-    private func newsBriefingTime(for preference: String) -> (Int, Int) {
-        switch preference {
-        case "afternoon": return (14, 0)
-        case "evening": return (18, 0)
-        default: return (8, 0)
-        }
+        _ = await notificationScheduler.requestPermission()
+        try await missedTaskService.rescheduleAllPops()
     }
 
     var reviewSummary: [(String, String)] {

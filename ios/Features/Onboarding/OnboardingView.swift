@@ -141,7 +141,8 @@ struct OnboardingView: View {
             streakRepository: appEnvironment.streakRepository,
             sleepRepository: appEnvironment.sleepRepository,
             routineGenerator: appEnvironment.routineGenerator,
-            notificationScheduler: appEnvironment.notificationScheduler
+            notificationScheduler: appEnvironment.notificationScheduler,
+            missedTaskService: appEnvironment.missedTaskService
         ) {
             appEnvironment.loadInitialState()
         }

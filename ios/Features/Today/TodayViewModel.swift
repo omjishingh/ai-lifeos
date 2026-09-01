@@ -8,6 +8,7 @@ final class TodayViewModel {
     private let goalRepository: GoalRepositoryProtocol
     private let streakRepository: StreakRepositoryProtocol
     private let userProfile: UserProfile?
+    private let popPopEngine: PopPopNotificationEngineProtocol
 
     var state: TodayViewState = .loading
     var tasks: [TaskItem] = []
@@ -18,6 +19,9 @@ final class TodayViewModel {
     var goalsTotal: Int = 0
     var showAddTask = false
     var showFocus = false
+    var upcomingPops: [UpcomingPop] = []
+    var pendingPopCount: Int = 0
+    var tick = Date.now
 
     var greeting: String {
         let name = userProfile?.name ?? "there"
@@ -63,13 +67,15 @@ final class TodayViewModel {
         scheduleService: ScheduleServiceProtocol,
         goalRepository: GoalRepositoryProtocol,
         streakRepository: StreakRepositoryProtocol,
-        userProfile: UserProfile?
+        userProfile: UserProfile?,
+        popPopEngine: PopPopNotificationEngineProtocol
     ) {
         self.taskService = taskService
         self.scheduleService = scheduleService
         self.goalRepository = goalRepository
         self.streakRepository = streakRepository
         self.userProfile = userProfile
+        self.popPopEngine = popPopEngine
     }
 
     func load() async {
@@ -87,6 +93,9 @@ final class TodayViewModel {
             } else if let coding = try streakRepository.fetchByType(.coding) {
                 currentStreak = coding.currentStreak
             }
+
+            pendingPopCount = await popPopEngine.pendingCount()
+            upcomingPops = await popPopEngine.upcomingPops(limit: 8)
 
             state = scheduleBlocks.isEmpty && tasks.isEmpty ? .empty : .loaded
         } catch {
@@ -119,6 +128,28 @@ final class TodayViewModel {
         let s = remaining % 60
         if h > 0 { return String(format: "%02d:%02d:%02d", h, m, s) }
         return String(format: "%02d:%02d", m, s)
+    }
+
+    func refreshTick() {
+        tick = .now
+    }
+
+    func progressForCurrent() -> Double {
+        if let task = currentTask,
+           let start = task.scheduledStart,
+           let end = task.scheduledEnd {
+            let total = end.timeIntervalSince(start)
+            guard total > 0 else { return 0 }
+            let elapsed = Date.now.timeIntervalSince(start)
+            return min(max(elapsed / total, 0), 1)
+        }
+        if let block = currentBlock {
+            let total = block.endTime.timeIntervalSince(block.startTime)
+            guard total > 0 else { return 0 }
+            let elapsed = Date.now.timeIntervalSince(block.startTime)
+            return min(max(elapsed / total, 0), 1)
+        }
+        return 0
     }
 
     private func isTaskNow(_ task: TaskItem) -> Bool {

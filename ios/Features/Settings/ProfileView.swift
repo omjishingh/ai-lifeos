@@ -52,6 +52,9 @@ struct ProfileView: View {
     }
 
     private let settingsSections: [(title: String, items: [SettingsItem])] = [
+        ("Notifications", [
+            SettingsItem(title: "POP-POP Alerts", icon: "bell.badge.fill", destination: .notifications)
+        ]),
         ("Schedule", [
             SettingsItem(title: "College", icon: "graduationcap.fill", destination: .college),
             SettingsItem(title: "Sleep & Music", icon: "moon.fill", destination: .sleep)
@@ -72,6 +75,8 @@ struct ProfileView: View {
                 NavigationLink { CollegeView() } label: { rowContent(item) }
             } else if item.destination == .sleep {
                 NavigationLink { SleepView() } label: { rowContent(item) }
+            } else if item.destination == .notifications {
+                NavigationLink { NotificationSettingsView() } label: { rowContent(item) }
             } else {
                 Button { handleAction(item) } label: { rowContent(item) }
             }

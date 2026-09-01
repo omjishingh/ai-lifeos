@@ -45,22 +45,36 @@ final class FocusTimerService {
         self.sessionStart = .now
         isRunning = true
         isPaused = false
+        FocusLiveActivityManager.start(taskTitle: taskTitle, plannedMinutes: plannedMinutes)
         startTimer()
     }
 
     func pause() {
         isPaused = true
         timer?.invalidate()
+        FocusLiveActivityManager.update(
+            elapsedSeconds: elapsedSeconds,
+            isPaused: true,
+            taskTitle: taskTitle,
+            plannedMinutes: plannedMinutes
+        )
     }
 
     func resume() {
         isPaused = false
+        FocusLiveActivityManager.update(
+            elapsedSeconds: elapsedSeconds,
+            isPaused: false,
+            taskTitle: taskTitle,
+            plannedMinutes: plannedMinutes
+        )
         startTimer()
     }
 
     func finish() throws {
         timer?.invalidate()
         isRunning = false
+        FocusLiveActivityManager.end()
         let minutes = max(elapsedSeconds / 60, 1)
 
         if let modelContext {
@@ -94,13 +108,23 @@ final class FocusTimerService {
         taskTitle = ""
         taskId = nil
         sessionStart = nil
+        FocusLiveActivityManager.end()
     }
 
     private func startTimer() {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             Task { @MainActor in
-                self?.elapsedSeconds += 1
+                guard let self else { return }
+                self.elapsedSeconds += 1
+                if self.isRunning && !self.isPaused {
+                    FocusLiveActivityManager.update(
+                        elapsedSeconds: self.elapsedSeconds,
+                        isPaused: false,
+                        taskTitle: self.taskTitle,
+                        plannedMinutes: self.plannedMinutes
+                    )
+                }
             }
         }
     }

@@ -4,7 +4,7 @@
 
 ## Current Phase
 
-**MVP Ready for Install** ✅
+**Advanced POP-POP + Lock Screen** ✅
 
 ## Overall Status
 
@@ -12,19 +12,19 @@
 |------|------|--------|
 | 1 | Project foundation | ✅ Complete |
 | 2 | Onboarding | ✅ Complete |
-| 3 | Today dashboard | ✅ Complete |
+| 3 | Today dashboard | ✅ Complete (hero + POP preview) |
 | 4 | Tasks CRUD | ✅ Complete |
 | 5 | Scheduling engine | ✅ Complete |
-| 6 | Notifications | ✅ Complete |
-| 7 | Coding (timer, streak) | ✅ Complete |
+| 6 | Notifications | ✅ **POP-POP Engine** (lock screen) |
+| 7 | Coding (timer, streak) | ✅ Complete + Live Activity |
 | 8 | Sleep | ✅ Complete |
 | 9 | AI backend | ✅ Complete |
 | 10 | AI Coach | ✅ Complete |
 | 11 | News pipeline | ✅ Complete |
-| 12 | Widgets | ⏳ Phase 2 |
+| 12 | Widgets | 🔄 Live Activity (Focus) |
 | 13 | Analytics | ⏳ Phase 2 |
-| 14 | Polish | 🔄 Partial |
-| 15 | QA | ⏳ Needs Mac/Xcode |
+| 14 | Polish | ✅ Advanced UI |
+| 15 | QA | ⏳ GitHub Actions IPA |
 
 ---
 
@@ -78,6 +78,40 @@ See **[INSTALL.md](INSTALL.md)** — full guide for installing on iPhone via Xco
 4. Optional: `cd backend && npm start` for live AI/news
 
 ### Remaining (Phase 2)
+- Home Screen widgets
+- Full analytics dashboard
+
+---
+
+## Session 4 — POP-POP Lock Screen (Advanced)
+
+### POP-POP Notification Engine
+- `PopPopNotificationEngine` — full day scheduling (tasks, blocks, wake, sleep, wind-down, morning briefing, AI news)
+- Time Sensitive notifications for lock screen priority
+- Categories with actions: Start Now, Complete, Snooze 15m, Move Later, Tomorrow
+- `NotificationDelegate` — handles lock screen action taps
+- `MissedTaskService` — auto-detect missed tasks + reschedule all pops
+- Auto-refresh on app launch and when app becomes active
+
+### Advanced Today UI
+- `HeroNowCard` — gradient NOW card with live countdown
+- `PopPopPreviewCard` — shows next 4 lock screen alerts
+- Live 1-second timer for remaining time
+
+### Settings
+- `NotificationSettingsView` — toggle POP-POP, sound, time sensitive, reminder intervals, reschedule button
+
+### Focus Live Activity
+- Lock screen timer during focus sessions (`FocusLiveActivityManager`)
+
+### New Files
+- `ios/Core/Notifications/PopPopNotificationEngine.swift`
+- `ios/Core/Notifications/NotificationCategories.swift`
+- `ios/Core/Notifications/NotificationDelegate.swift`
+- `ios/Core/Services/MissedTaskService.swift`
+- `ios/Features/Today/PopPopPreviewCard.swift`
+- `ios/Features/Settings/NotificationSettingsView.swift`
+- `ios/Features/Focus/FocusLiveActivity.swift`
 - WidgetKit widgets
 - Apple Calendar sync
 - Advanced analytics / weekly AI review

@@ -13,11 +13,11 @@ protocol TaskServiceProtocol {
 
 struct TaskService: TaskServiceProtocol {
     private let taskRepository: TaskRepositoryProtocol
-    private let notificationScheduler: NotificationSchedulerProtocol
+    private let popEngine: PopPopNotificationEngineProtocol
 
-    init(taskRepository: TaskRepositoryProtocol, notificationScheduler: NotificationSchedulerProtocol) {
+    init(taskRepository: TaskRepositoryProtocol, popEngine: PopPopNotificationEngineProtocol) {
         self.taskRepository = taskRepository
-        self.notificationScheduler = notificationScheduler
+        self.popEngine = popEngine
     }
 
     func fetchAll() throws -> [TaskItem] {
@@ -35,16 +35,12 @@ struct TaskService: TaskServiceProtocol {
 
     func updateTask(_ task: TaskItem) throws {
         try taskRepository.update(task)
-        Task {
-            await notificationScheduler.cancelReminders(for: task.id)
-        }
+        Task { await popEngine.cancelTaskPops(taskId: task.id) }
         scheduleReminders(for: task)
     }
 
     func deleteTask(_ task: TaskItem) throws {
-        Task {
-            await notificationScheduler.cancelReminders(for: task.id)
-        }
+        Task { await popEngine.cancelTaskPops(taskId: task.id) }
         try taskRepository.delete(task)
     }
 
@@ -52,9 +48,7 @@ struct TaskService: TaskServiceProtocol {
         task.taskStatus = .completed
         task.completedAt = .now
         try taskRepository.update(task)
-        Task {
-            await notificationScheduler.cancelReminders(for: task.id)
-        }
+        Task { await popEngine.cancelTaskPops(taskId: task.id) }
     }
 
     func startTask(_ task: TaskItem) throws {
@@ -78,16 +72,11 @@ struct TaskService: TaskServiceProtocol {
     }
 
     private func scheduleReminders(for task: TaskItem) {
-        guard let start = task.scheduledStart, task.taskStatus == .planned || task.taskStatus == .inProgress else {
-            return
-        }
+        guard task.scheduledStart != nil,
+              task.taskStatus == .planned || task.taskStatus == .inProgress else { return }
         Task {
-            try? await notificationScheduler.scheduleTaskReminder(
-                taskId: task.id,
-                title: task.title,
-                date: start,
-                minutesBefore: 15
-            )
+            var prefs = PopPopPreferences()
+            try? await popEngine.scheduleTaskPops(task: task, preferences: prefs)
         }
     }
 }

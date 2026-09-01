@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 struct TodayView: View {
     @Environment(\.appEnvironment) private var appEnvironment
@@ -15,6 +16,9 @@ struct TodayView: View {
             .navigationBarTitleDisplayMode(.inline)
             .task { setupViewModel(); await viewModel?.load() }
             .refreshable { await viewModel?.load() }
+            .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { _ in
+                viewModel?.refreshTick()
+            }
             .sheet(isPresented: Binding(get: { viewModel?.showAddTask ?? false }, set: { viewModel?.showAddTask = $0 })) {
                 TaskFormView(existing: nil) { title, desc, cat, pri, dur, deadline in
                     Task {
@@ -61,6 +65,7 @@ struct TodayView: View {
             LazyVStack(spacing: AppSpacing.lg) {
                 headerSection(viewModel)
                 nowSection(viewModel)
+                PopPopPreviewCard(upcomingPops: viewModel.upcomingPops, pendingCount: viewModel.pendingPopCount)
                 progressSection(viewModel)
                 timelineSection(viewModel)
                 quickActionsSection(viewModel)
@@ -83,30 +88,40 @@ struct TodayView: View {
 
     @ViewBuilder
     private func nowSection(_ vm: TodayViewModel) -> some View {
+        let _ = vm.tick
         if let task = vm.currentTask {
-            VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                Text("NOW").font(AppTypography.caption).foregroundStyle(colors.accent).fontWeight(.semibold)
-                if let remaining = vm.remainingTime(for: task) {
-                    Text("\(remaining) remaining").font(AppTypography.caption).foregroundStyle(colors.secondaryText).monospacedDigit()
-                }
-                TaskCard(title: task.title, category: task.category, timeRange: taskTimeRange(task), status: task.taskStatus, progress: nil,
-                    onStart: { Task { await vm.startCurrentTask(); vm.showFocus = true } },
-                    onComplete: { Task { await vm.completeCurrentTask() } })
-            }
+            HeroNowCard(
+                title: task.title,
+                subtitle: task.category,
+                timeRange: taskTimeRange(task) ?? "",
+                remaining: vm.remainingTime(for: task),
+                progress: vm.progressForCurrent(),
+                icon: iconForCategory(task.category),
+                color: colorForCategory(task.category),
+                onFocus: { Task { await vm.startCurrentTask(); vm.showFocus = true } },
+                onComplete: { Task { await vm.completeCurrentTask() } }
+            )
         } else if let block = vm.currentBlock {
-            VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                Text("NOW").font(AppTypography.caption).foregroundStyle(colors.accent).fontWeight(.semibold)
-                GlassCard {
-                    HStack {
-                        Image(systemName: block.icon ?? "circle.fill").foregroundStyle(colors.accent)
-                        VStack(alignment: .leading) {
-                            Text(block.title).font(AppTypography.headline)
-                            Text("\(block.startTime.timeString()) — \(block.endTime.timeString())").font(AppTypography.caption).foregroundStyle(colors.secondaryText)
-                        }
-                    }
-                }
-            }
+            HeroNowCard(
+                title: block.title,
+                subtitle: block.blockType.capitalized,
+                timeRange: "\(block.startTime.timeString()) — \(block.endTime.timeString())",
+                remaining: remainingTimeForBlock(block),
+                progress: vm.progressForCurrent(),
+                icon: block.icon ?? "calendar",
+                color: blockColor(block)
+            )
         }
+    }
+
+    private func remainingTimeForBlock(_ block: ResolvedScheduleBlock) -> String? {
+        let remaining = Int(block.endTime.timeIntervalSince(.now))
+        guard remaining > 0 else { return nil }
+        let h = remaining / 3600
+        let m = (remaining % 3600) / 60
+        let s = remaining % 60
+        if h > 0 { return String(format: "%02d:%02d:%02d", h, m, s) }
+        return String(format: "%02d:%02d", m, s)
     }
 
     private func progressSection(_ vm: TodayViewModel) -> some View {
@@ -148,7 +163,26 @@ struct TodayView: View {
     private func setupViewModel() {
         guard let env = appEnvironment, viewModel == nil else { return }
         viewModel = TodayViewModel(taskService: env.taskService, scheduleService: env.scheduleService,
-            goalRepository: env.goalRepository, streakRepository: env.streakRepository, userProfile: env.userProfile)
+            goalRepository: env.goalRepository, streakRepository: env.streakRepository,
+            userProfile: env.userProfile, popPopEngine: env.popPopEngine)
+    }
+
+    private func iconForCategory(_ category: String) -> String {
+        switch category.lowercased() {
+        case "personal coding": return "laptopcomputer"
+        case "college": return "graduationcap.fill"
+        case "sleep": return "moon.fill"
+        default: return "checkmark.circle"
+        }
+    }
+
+    private func colorForCategory(_ category: String) -> Color {
+        switch category.lowercased() {
+        case "personal coding": return colors.coding
+        case "college": return colors.college
+        case "sleep": return colors.sleep
+        default: return colors.accent
+        }
     }
 
     private func taskTimeRange(_ task: TaskItem) -> String? {

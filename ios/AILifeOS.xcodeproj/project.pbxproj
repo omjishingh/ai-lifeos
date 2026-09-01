@@ -24,7 +24,10 @@
 		FC2C875B236A6F96AFFB3F94 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824846D3731FCCD1FDF5F5FE /* Theme.swift */; };
 		AEE0C7E4EBE235CD44C0FE7F /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F383EF1A5E569919BF4FD35 /* APIClient.swift */; };
 		9A0E73F816868916E7D1AB15 /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E3D39EF5FD794B355B22FF /* APIConfig.swift */; };
+		76F0A10399DB48E9DB78EB1A /* NotificationCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA54943BF5A1CAC92D70715 /* NotificationCategories.swift */; };
+		E396E116629A4FE885209F3D /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E279B97BA0CEAE154950593 /* NotificationDelegate.swift */; };
 		2AF0D8D0AB9CFECFF9A5D531 /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0BC58A013A858ACA9E30CD /* NotificationScheduler.swift */; };
+		D81BC721D5B030038B6D05CA /* PopPopNotificationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD71A686B79EF85C38FF2945 /* PopPopNotificationEngine.swift */; };
 		743F1FF0BB70FF59E2A1A961 /* ModelContainerSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BFE643D7BB4ECCCC9F8FF1 /* ModelContainerSetup.swift */; };
 		76A44FE55ABCBDA449B0907D /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755178F208188C809B4F4600 /* AppSettings.swift */; };
 		5EC3F41D8C4616ED663D0A24 /* CollegeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF0D22DE06FF131190FF7D6 /* CollegeEvent.swift */; };
@@ -38,6 +41,7 @@
 		8C36FE31BAC97A820503751D /* Repositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6D43DEEEBB7926DB2D7E7E /* Repositories.swift */; };
 		FC3BB1E481A1D1384D818812 /* DataExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750FF3301BB8DCA37F2B615 /* DataExportService.swift */; };
 		9EC4122172091A4E6E035F43 /* FocusTimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02E16FDF9BABD16EAC143AF /* FocusTimerService.swift */; };
+		B53192A2C5C885B231C9CB8D /* MissedTaskService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78309186718D1251E7066AC /* MissedTaskService.swift */; };
 		9C0939BD6921BFEC160C1C7A /* NewsAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76ED3BAD52AFC896341B9DC /* NewsAIService.swift */; };
 		4F7C9A49487B1EA32FFABBF3 /* RoutineGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB3890CF73349CAE0B9C024 /* RoutineGenerator.swift */; };
 		BF9E22E283B5896CA49B9D0A /* ScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77386B7859D878408B9108D0 /* ScheduleService.swift */; };
@@ -49,17 +53,20 @@
 		93C1AA7A80CF44482D203E4E /* AIChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D9A98D67DDDD7454DDF12A /* AIChatView.swift */; };
 		8843102954FF0549367E8ED8 /* AIHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9B53C865EB0384D2DD81B /* AIHubView.swift */; };
 		08B6459214677C2E5844A639 /* CollegeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2EEA984F1EEB2C767E7A28 /* CollegeView.swift */; };
+		962AA3817FB88E7455920031 /* FocusLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B561B0B53A4A6CC104B52F /* FocusLiveActivity.swift */; };
 		D356F9C2C8B5F8D44116EBF7 /* FocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01E4985435337DA4E540E6 /* FocusView.swift */; };
 		580417970E527FE279ADEE99 /* NewsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED5F794462C1CC99B5CD606 /* NewsListView.swift */; };
 		594DD5B2CF6BDCDE0F23F81C /* OnboardingStepViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782F7610C604F258F5D15E43 /* OnboardingStepViews.swift */; };
 		06A418DD5F2ACCFF6E54D1CC /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BF66007113119C916075E6 /* OnboardingView.swift */; };
 		A18C399B74FDF99ADA8D51D5 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0CC2EBAA272BA33410FAE9 /* OnboardingViewModel.swift */; };
 		D4F37AF60672D81226E761D4 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1790D542EA8BAB0FE08D59F8 /* ScheduleView.swift */; };
+		E12583801D5B5735BBA4C243 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422436F6196A59C9193F6173 /* NotificationSettingsView.swift */; };
 		AE7249A1455513BA4CB494F7 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0011BCEE7F0B6071E4AE42DF /* ProfileView.swift */; };
 		9CF23E6CF4A24ADB1FDD19B9 /* SleepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC7593677646AB6CC9062B /* SleepView.swift */; };
 		117E5431622A86D928E84499 /* TaskFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4992A89721360B860FAA75F0 /* TaskFormView.swift */; };
 		58860767FFCA7F4E8D0A9410 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B483348EDBD875869DE07E3 /* TasksView.swift */; };
 		3E63790F887B12A4FCD7890B /* TasksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595ABC83A40421B01FB77440 /* TasksViewModel.swift */; };
+		0457E4B388FBC9EB26024DC6 /* PopPopPreviewCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A4EB616E5D20D9A4FEEEF6 /* PopPopPreviewCard.swift */; };
 		530989F701CA2004F28BCD91 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC29342C61BC07A03B0C87E /* TodayView.swift */; };
 		F515443255B62DA9EFB16445 /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74E69234EE745BF822763BF /* TodayViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -83,7 +90,10 @@
 		824846D3731FCCD1FDF5F5FE /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme.swift"; sourceTree = "<group>"; };
 		7F383EF1A5E569919BF4FD35 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient.swift"; sourceTree = "<group>"; };
 		00E3D39EF5FD794B355B22FF /* APIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIConfig.swift"; sourceTree = "<group>"; };
+		FFA54943BF5A1CAC92D70715 /* NotificationCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCategories.swift"; sourceTree = "<group>"; };
+		6E279B97BA0CEAE154950593 /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationDelegate.swift"; sourceTree = "<group>"; };
 		0D0BC58A013A858ACA9E30CD /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationScheduler.swift"; sourceTree = "<group>"; };
+		AD71A686B79EF85C38FF2945 /* PopPopNotificationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PopPopNotificationEngine.swift"; sourceTree = "<group>"; };
 		56BFE643D7BB4ECCCC9F8FF1 /* ModelContainerSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelContainerSetup.swift"; sourceTree = "<group>"; };
 		755178F208188C809B4F4600 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings.swift"; sourceTree = "<group>"; };
 		EDF0D22DE06FF131190FF7D6 /* CollegeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollegeEvent.swift"; sourceTree = "<group>"; };
@@ -97,6 +107,7 @@
 		2A6D43DEEEBB7926DB2D7E7E /* Repositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Repositories.swift"; sourceTree = "<group>"; };
 		B750FF3301BB8DCA37F2B615 /* DataExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataExportService.swift"; sourceTree = "<group>"; };
 		A02E16FDF9BABD16EAC143AF /* FocusTimerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusTimerService.swift"; sourceTree = "<group>"; };
+		F78309186718D1251E7066AC /* MissedTaskService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MissedTaskService.swift"; sourceTree = "<group>"; };
 		E76ED3BAD52AFC896341B9DC /* NewsAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewsAIService.swift"; sourceTree = "<group>"; };
 		FBB3890CF73349CAE0B9C024 /* RoutineGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RoutineGenerator.swift"; sourceTree = "<group>"; };
 		77386B7859D878408B9108D0 /* ScheduleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScheduleService.swift"; sourceTree = "<group>"; };
@@ -108,17 +119,20 @@
 		81D9A98D67DDDD7454DDF12A /* AIChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AIChatView.swift"; sourceTree = "<group>"; };
 		5CE9B53C865EB0384D2DD81B /* AIHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AIHubView.swift"; sourceTree = "<group>"; };
 		1B2EEA984F1EEB2C767E7A28 /* CollegeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollegeView.swift"; sourceTree = "<group>"; };
+		53B561B0B53A4A6CC104B52F /* FocusLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusLiveActivity.swift"; sourceTree = "<group>"; };
 		2B01E4985435337DA4E540E6 /* FocusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusView.swift"; sourceTree = "<group>"; };
 		6ED5F794462C1CC99B5CD606 /* NewsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewsListView.swift"; sourceTree = "<group>"; };
 		782F7610C604F258F5D15E43 /* OnboardingStepViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingStepViews.swift"; sourceTree = "<group>"; };
 		E1BF66007113119C916075E6 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView.swift"; sourceTree = "<group>"; };
 		1C0CC2EBAA272BA33410FAE9 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingViewModel.swift"; sourceTree = "<group>"; };
 		1790D542EA8BAB0FE08D59F8 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScheduleView.swift"; sourceTree = "<group>"; };
+		422436F6196A59C9193F6173 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationSettingsView.swift"; sourceTree = "<group>"; };
 		0011BCEE7F0B6071E4AE42DF /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileView.swift"; sourceTree = "<group>"; };
 		5DEC7593677646AB6CC9062B /* SleepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SleepView.swift"; sourceTree = "<group>"; };
 		4992A89721360B860FAA75F0 /* TaskFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskFormView.swift"; sourceTree = "<group>"; };
 		6B483348EDBD875869DE07E3 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TasksView.swift"; sourceTree = "<group>"; };
 		595ABC83A40421B01FB77440 /* TasksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TasksViewModel.swift"; sourceTree = "<group>"; };
+		38A4EB616E5D20D9A4FEEEF6 /* PopPopPreviewCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PopPopPreviewCard.swift"; sourceTree = "<group>"; };
 		EDC29342C61BC07A03B0C87E /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayView.swift"; sourceTree = "<group>"; };
 		E74E69234EE745BF822763BF /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayViewModel.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -239,7 +253,10 @@
 		8BFF0A6B9CF0E3B5A345714A = {
 			isa = PBXGroup;
 			children = (
+				FFA54943BF5A1CAC92D70715,
+				6E279B97BA0CEAE154950593,
 				0D0BC58A013A858ACA9E30CD,
+				AD71A686B79EF85C38FF2945,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -283,6 +300,7 @@
 			children = (
 				B750FF3301BB8DCA37F2B615,
 				A02E16FDF9BABD16EAC143AF,
+				F78309186718D1251E7066AC,
 				E76ED3BAD52AFC896341B9DC,
 				FBB3890CF73349CAE0B9C024,
 				77386B7859D878408B9108D0,
@@ -339,6 +357,7 @@
 		F88EE74BBB2D901E624C14F9 = {
 			isa = PBXGroup;
 			children = (
+				53B561B0B53A4A6CC104B52F,
 				2B01E4985435337DA4E540E6,
 			);
 			path = Focus;
@@ -373,6 +392,7 @@
 		785638217223559EA9DAE4EC = {
 			isa = PBXGroup;
 			children = (
+				422436F6196A59C9193F6173,
 				0011BCEE7F0B6071E4AE42DF,
 			);
 			path = Settings;
@@ -399,6 +419,7 @@
 		BD414D1957084222DFFC5EA1 = {
 			isa = PBXGroup;
 			children = (
+				38A4EB616E5D20D9A4FEEEF6,
 				EDC29342C61BC07A03B0C87E,
 				E74E69234EE745BF822763BF,
 			);
@@ -497,7 +518,10 @@
 				FC2C875B236A6F96AFFB3F94 /* Theme.swift in Sources */,
 				AEE0C7E4EBE235CD44C0FE7F /* APIClient.swift in Sources */,
 				9A0E73F816868916E7D1AB15 /* APIConfig.swift in Sources */,
+				76F0A10399DB48E9DB78EB1A /* NotificationCategories.swift in Sources */,
+				E396E116629A4FE885209F3D /* NotificationDelegate.swift in Sources */,
 				2AF0D8D0AB9CFECFF9A5D531 /* NotificationScheduler.swift in Sources */,
+				D81BC721D5B030038B6D05CA /* PopPopNotificationEngine.swift in Sources */,
 				743F1FF0BB70FF59E2A1A961 /* ModelContainerSetup.swift in Sources */,
 				76A44FE55ABCBDA449B0907D /* AppSettings.swift in Sources */,
 				5EC3F41D8C4616ED663D0A24 /* CollegeEvent.swift in Sources */,
@@ -511,6 +535,7 @@
 				8C36FE31BAC97A820503751D /* Repositories.swift in Sources */,
 				FC3BB1E481A1D1384D818812 /* DataExportService.swift in Sources */,
 				9EC4122172091A4E6E035F43 /* FocusTimerService.swift in Sources */,
+				B53192A2C5C885B231C9CB8D /* MissedTaskService.swift in Sources */,
 				9C0939BD6921BFEC160C1C7A /* NewsAIService.swift in Sources */,
 				4F7C9A49487B1EA32FFABBF3 /* RoutineGenerator.swift in Sources */,
 				BF9E22E283B5896CA49B9D0A /* ScheduleService.swift in Sources */,
@@ -522,17 +547,20 @@
 				93C1AA7A80CF44482D203E4E /* AIChatView.swift in Sources */,
 				8843102954FF0549367E8ED8 /* AIHubView.swift in Sources */,
 				08B6459214677C2E5844A639 /* CollegeView.swift in Sources */,
+				962AA3817FB88E7455920031 /* FocusLiveActivity.swift in Sources */,
 				D356F9C2C8B5F8D44116EBF7 /* FocusView.swift in Sources */,
 				580417970E527FE279ADEE99 /* NewsListView.swift in Sources */,
 				594DD5B2CF6BDCDE0F23F81C /* OnboardingStepViews.swift in Sources */,
 				06A418DD5F2ACCFF6E54D1CC /* OnboardingView.swift in Sources */,
 				A18C399B74FDF99ADA8D51D5 /* OnboardingViewModel.swift in Sources */,
 				D4F37AF60672D81226E761D4 /* ScheduleView.swift in Sources */,
+				E12583801D5B5735BBA4C243 /* NotificationSettingsView.swift in Sources */,
 				AE7249A1455513BA4CB494F7 /* ProfileView.swift in Sources */,
 				9CF23E6CF4A24ADB1FDD19B9 /* SleepView.swift in Sources */,
 				117E5431622A86D928E84499 /* TaskFormView.swift in Sources */,
 				58860767FFCA7F4E8D0A9410 /* TasksView.swift in Sources */,
 				3E63790F887B12A4FCD7890B /* TasksViewModel.swift in Sources */,
+				0457E4B388FBC9EB26024DC6 /* PopPopPreviewCard.swift in Sources */,
 				530989F701CA2004F28BCD91 /* TodayView.swift in Sources */,
 				F515443255B62DA9EFB16445 /* TodayViewModel.swift in Sources */,
 			);

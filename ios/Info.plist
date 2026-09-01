@@ -10,6 +10,8 @@
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
 	<string>Used to remind you about tasks, routines, wake-up, sleep, and your daily AI briefing.</string>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>

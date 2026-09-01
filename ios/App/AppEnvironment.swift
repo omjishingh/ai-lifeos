@@ -23,6 +23,9 @@ final class AppEnvironment {
     let newsService: NewsServiceProtocol
     let aiService: AIServiceProtocol
     let notificationScheduler: NotificationSchedulerProtocol
+    let popPopEngine: PopPopNotificationEngineProtocol
+    let missedTaskService: MissedTaskServiceProtocol
+    let notificationDelegate: NotificationDelegate
     let networkMonitor: NetworkMonitorProtocol
     let focusTimer: FocusTimerService
     let sleepMusicPlayer: SleepMusicPlayer
@@ -43,13 +46,22 @@ final class AppEnvironment {
         self.streakRepository = StreakRepository(modelContext: modelContext)
         self.sleepRepository = SleepRepository(modelContext: modelContext)
 
-        self.notificationScheduler = NotificationScheduler()
+        let popEngine = PopPopNotificationEngine()
+        self.popPopEngine = popEngine
+        self.notificationScheduler = popEngine
         self.networkMonitor = NetworkMonitor()
         self.apiClient = APIClient()
         self.routineGenerator = RoutineGenerator()
 
         self.scheduleService = ScheduleService(scheduleRepository: scheduleRepository)
-        self.taskService = TaskService(taskRepository: taskRepository, notificationScheduler: notificationScheduler)
+        self.missedTaskService = MissedTaskService(
+            taskRepository: taskRepository,
+            scheduleService: scheduleService,
+            settingsRepository: settingsRepository,
+            popEngine: popEngine
+        )
+        self.taskService = TaskService(taskRepository: taskRepository, popEngine: popEngine)
+        self.notificationDelegate = NotificationDelegate()
         self.streakService = StreakService(streakRepository: streakRepository, taskRepository: taskRepository)
         self.newsService = NewsService(apiClient: apiClient, newsRepository: newsRepository, networkMonitor: networkMonitor)
         self.aiService = AIService(apiClient: apiClient, networkMonitor: networkMonitor)
@@ -57,6 +69,16 @@ final class AppEnvironment {
         self.focusTimer = FocusTimerService(modelContext: modelContext, streakService: streakService)
         self.sleepMusicPlayer = SleepMusicPlayer()
         self.focusTimer.profileProvider = { [weak self] in self?.userProfile }
+        self.notificationDelegate.appEnvironment = self
+    }
+
+    func refreshPopsAndMissedTasks() async {
+        do {
+            try await missedTaskService.checkAndMarkMissedTasks()
+            try await missedTaskService.rescheduleAllPops()
+        } catch {
+            print("POP-POP refresh failed: \(error)")
+        }
     }
 
     func loadInitialState() {

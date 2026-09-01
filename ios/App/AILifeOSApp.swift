@@ -10,6 +10,7 @@ struct AILifeOSApp: App {
             let container = try makeModelContainer()
             let environment = AppEnvironment(modelContainer: container)
             environment.loadInitialState()
+            environment.notificationDelegate.configure()
             _appEnvironment = State(initialValue: environment)
         } catch {
             fatalError("Failed to create ModelContainer: \(error)")
@@ -22,6 +23,10 @@ struct AILifeOSApp: App {
                 .environment(\.appEnvironment, appEnvironment)
                 .environment(\.appColors, AppColors.light)
                 .modelContainer(appEnvironment.modelContainer)
+                .task {
+                    _ = await appEnvironment.popPopEngine.requestPermission()
+                    await appEnvironment.refreshPopsAndMissedTasks()
+                }
         }
     }
 }
@@ -29,6 +34,7 @@ struct AILifeOSApp: App {
 struct RootView: View {
     @Environment(\.appEnvironment) private var appEnvironment
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         Group {
@@ -39,6 +45,10 @@ struct RootView: View {
             }
         }
         .environment(\.appColors, colorScheme == .dark ? AppColors.dark : AppColors.light)
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .active, let env = appEnvironment else { return }
+            Task { await env.refreshPopsAndMissedTasks() }
+        }
     }
 }
 
