@@ -180,7 +180,7 @@ enum MockAIProvider {
 
     static func planResponse(hours: Double) -> AIPlanResponse {
         let minutes = Int(hours * 60)
-        AIPlanResponse(suggestions: [
+        return AIPlanResponse(suggestions: [
             AISuggestion(title: "Personal Coding", durationMinutes: min(minutes * 2 / 3, 120), priority: "high"),
             AISuggestion(title: "College Review", durationMinutes: min(minutes / 3, 60), priority: "medium")
         ])
