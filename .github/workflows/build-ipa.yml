@@ -1,0 +1,82 @@
+name: Build Unsigned IPA (E-Sign)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+jobs:
+  build-unsigned-ipa:
+    runs-on: macos-14
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Build iOS app (NO Apple ID / NO signing)
+        working-directory: ios
+        run: |
+          set -euo pipefail
+          DERIVED="$RUNNER_TEMP/DerivedData"
+          xcodebuild build \
+            -project AILifeOS.xcodeproj \
+            -scheme AILifeOS \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath "$DERIVED" \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            AD_HOC_CODE_SIGNING_ALLOWED=YES \
+            ONLY_ACTIVE_ARCH=NO \
+            | tee "$RUNNER_TEMP/build.log"
+          echo "=== Build products ==="
+          find "$DERIVED" -name "*.app" -type d
+
+      - name: Package unsigned IPA
+        run: |
+          set -euo pipefail
+          APP_PATH=$(find "$RUNNER_TEMP/DerivedData" -name "AILifeOS.app" -type d | head -1)
+          if [ -z "$APP_PATH" ]; then
+            echo "ERROR: AILifeOS.app not found"
+            find "$RUNNER_TEMP/DerivedData" -type d | head -50
+            exit 1
+          fi
+          echo "Found app: $APP_PATH"
+          rm -rf "$RUNNER_TEMP/Payload"
+          mkdir -p "$RUNNER_TEMP/Payload"
+          cp -R "$APP_PATH" "$RUNNER_TEMP/Payload/"
+          cd "$RUNNER_TEMP"
+          zip -qr AILifeOS-unsigned.ipa Payload
+          ls -lh AILifeOS-unsigned.ipa
+          echo "IPA size: $(du -h AILifeOS-unsigned.ipa | cut -f1)"
+
+      - name: Upload IPA (unsigned — for E-Sign)
+        uses: actions/upload-artifact@v4
+        with:
+          name: AILifeOS-unsigned-IPA
+          path: ${{ runner.temp }}/AILifeOS-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Upload build log (on failure debug)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: ${{ runner.temp }}/build.log
+          if-no-files-found: ignore
+
+      - name: Summary
+        run: |
+          echo "## Unsigned IPA ready (E-Sign)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "1. Download **AILifeOS-unsigned-IPA** from Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "2. iPhone par **E-Sign** se install karo" >> $GITHUB_STEP_SUMMARY
+          echo "3. **Apple ID ki zaroorat nahi** — E-Sign apna certificate use karega" >> $GITHUB_STEP_SUMMARY
