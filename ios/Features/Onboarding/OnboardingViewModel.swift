@@ -144,7 +144,7 @@ final class OnboardingViewModel {
             settings.sleepMusicPreference = sleepMusicPreference
             try settingsRepository.saveSettings(settings)
 
-            let blocks = routineGenerator.generateInitialSchedule(for: profile)
+            let blocks = routineGenerator.generateInitialSchedule(for: profile, on: .now)
             for block in blocks {
                 try scheduleRepository.create(block)
             }

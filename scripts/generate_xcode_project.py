@@ -111,7 +111,7 @@ pbx += f'\t\t{PRODUCT_REF} /* AILifeOS.app */ = {{isa = PBXFileReference; explic
 
 for sf, fid in file_refs.items():
     fname = os.path.basename(sf)
-    pbx += f'\t\t{fid} /* {fname} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "{sf}"; sourceTree = "<group>"; }};\n'
+    pbx += f'\t\t{fid} /* {fname} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "{fname}"; sourceTree = "<group>"; }};\n'
 
 pbx += '''/* End PBXFileReference section */
 

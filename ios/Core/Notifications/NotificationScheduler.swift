@@ -1,6 +1,15 @@
 import Foundation
 import UserNotifications
 
+protocol NotificationSchedulerProtocol {
+    func requestPermission() async -> Bool
+    func scheduleTaskReminder(taskId: UUID, title: String, date: Date, minutesBefore: Int) async throws
+    func cancelReminders(for taskId: UUID) async
+    func scheduleDailyBriefing(at hour: Int, minute: Int) async throws
+    func scheduleWakeUp(at date: Date) async throws
+    func scheduleSleepReminder(at date: Date) async throws
+}
+
 final class NotificationScheduler: NotificationSchedulerProtocol {
     private let center = UNUserNotificationCenter.current()
 
